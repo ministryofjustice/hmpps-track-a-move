@@ -1,0 +1,23 @@
+{
+  "name": "hmpps-track-a-move",
+  "version": "1.0.0",
+  "description": "track-a-move VTL",
+  "main": "test.js",
+  "dependencies": {
+    "api-gateway-mapping-template": "^0.0.8"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ministryofjustice/hmpps-track-a-move.git"
+  },
+  "author": "miguel.afonso@digital.justice.gov.uk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ministryofjustice/hmpps-track-a-move/issues"
+  },
+  "homepage": "https://github.com/ministryofjustice/hmpps-track-a-move#readme"
+}
