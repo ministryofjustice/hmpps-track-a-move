@@ -4,7 +4,9 @@
   "description": "track-a-move VTL",
   "main": "test.js",
   "dependencies": {
-    "api-gateway-mapping-template": "^0.0.8"
+    "api-gateway-mapping-template": "^0.0.8",
+    "is-my-json-valid": "^2.20.5",
+    "json-find": "^2.0.7"
   },
   "devDependencies": {},
   "scripts": {
