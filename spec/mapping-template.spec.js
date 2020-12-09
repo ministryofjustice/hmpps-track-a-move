@@ -21,7 +21,7 @@ const runTemplate = (payloadName, templateName = 'mapping') => {
   result.Records = result.Records.map(({Data}) => {
     return {
       Data: JSON.parse(Buffer.from(Data, 'base64').toString())
-    } 
+    }
   })
   return result
 }
@@ -36,12 +36,12 @@ const runTemplateAgainstSnapshot = (sample, templateName = 'mapping') => {
     expected
   }
 }
-
-describe('When loading input 2', function() {
+/*
+describe.skip('When loading input 1', function() {
   let result
 
   beforeEach(function() {
-    result = runTemplate('input-2')
+    result = runTemplate('input-1')
   })
 
   it('should have the DeliveryStreamName property', function(){
@@ -61,8 +61,8 @@ describe('When loading input 2', function() {
       "vehicle_registration": "JBW-89",
       "vehicle_vin": "VIN-1830",
       "latitude": 55.783333,
-      "longitude": -4.000000000000001,
-      "precision_hdop": 4.9,
+      "longitude": -4.005057906994962,
+      "precision_hdop": null,
       "precision_vdop": null,
       "speed": 62.3,
       "altitude": 12.4,
@@ -104,8 +104,17 @@ describe('When loading input 2', function() {
     })
   })
 })
+*/
 
-describe('When loading input 2 (v2 - using snapshots)', function() {
+describe('When payload has only mandatory fields', function() {
+  it('should generate the expected output', function(){
+    const values = runTemplateAgainstSnapshot('1')
+    expect(values.result).to.deep.equal(values.expected)
+  })
+})
+
+
+describe('When payload has all optional fields', function() {
   it('should generate the expected output', function(){
     const values = runTemplateAgainstSnapshot('2')
     expect(values.result).to.deep.equal(values.expected)

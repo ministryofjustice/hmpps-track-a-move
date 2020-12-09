@@ -9,12 +9,12 @@
         "vehicle_registration": "LD18BSM",
         "latitude": 51.4993193,
         "longitude": -0.1361525,
-        "altitude": 15.2,
-        "bearing": 250,
-        "precision_hdop": 12.5,
-        "precision_vdop": 6.2,
-        "speed": 30.6,
-        "vehicle_vin": "1GKER23DX9J178497"
+        "altitude": null,
+        "bearing": null,
+        "precision_hdop": null,
+        "precision_vdop": null,
+        "speed": null,
+        "vehicle_vin": ""
       }
     }
   ]
