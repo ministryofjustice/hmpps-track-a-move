@@ -1,0 +1,36 @@
+[
+  {
+    "tracking_id": "c27b0ec4-3626-4deb-91e2-34d0af1dc36b",
+    "journey_id": "9de29b01-2f8e-476f-a401-86051c45f8b7",
+    "tracking_timestamp": "2020-08-13 09:00:02 +0100",
+    "vehicle_registration": "JBW-89",
+    "altitude": 12.4,
+    "precision_hdop": 4.9,
+    "speed": 62.3,
+    "vehicle_vin": "VIN-1830",
+    "latitude": 55.783333,
+    "longitude": -4.000000000000001
+  },
+  {
+    "tracking_id": "cb32774f-d813-4ef9-8b7a-3bba7ee3a5ca",
+    "journey_id": "9de29b01-2f8e-476f-a401-86051c45f8b7",
+    "tracking_timestamp": "2020-08-13 09:01:04 +0100",
+    "vehicle_registration": "JBW-89",
+    "altitude": 73.9,
+    "speed": 10.0,
+    "vehicle_vin": "VIN-1830",
+    "latitude": 55.78435888252279,
+    "longitude": -4.005057906994962
+  },
+  {
+    "tracking_id": "4f7167f2-66d1-43f4-ae56-ab5b09ef7d76",
+    "journey_id": "9de29b01-2f8e-476f-a401-86051c45f8b7",
+    "tracking_timestamp": "2020-08-13 09:02:10 +0100",
+    "vehicle_registration": "JBW-89",
+    "altitude": 71.1,
+    "speed": 85.4,
+    "vehicle_vin": "VIN-1830",
+    "latitude": 55.78554164311852,
+    "longitude": -4.010504853404174
+  }
+]

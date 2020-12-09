@@ -5,12 +5,14 @@
   "main": "test.js",
   "dependencies": {
     "api-gateway-mapping-template": "^0.0.8",
+    "chai": "^4.2.0",
     "is-my-json-valid": "^2.20.5",
-    "json-find": "^2.0.7"
+    "json-find": "^2.0.7",
+    "mocha": "^8.2.1"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "node test.js"
+    "test": "mocha spec"
   },
   "repository": {
     "type": "git",
