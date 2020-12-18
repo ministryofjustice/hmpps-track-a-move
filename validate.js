@@ -16,19 +16,6 @@ function testRunTemplate() {
     var payload = fs.readFileSync(__dirname + '/sample2.json', 'utf8');
     var result = runTemplate(payload)
     console.log(result);
-
-    jsObj = JSON.parse(result);
-    console.log(jsObj['DeliveryStreamName'] == true)
-
-
-    //TODO: Use assertions
-    if ("DeliveryStreamName" in jsObj) {
-        console.log("DeliveryStreamName exists");
-    }
-    else
-    {
-        console.error('Failed.')
-    }
 }
 
 testRunTemplate();
