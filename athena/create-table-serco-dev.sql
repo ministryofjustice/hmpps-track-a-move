@@ -24,4 +24,4 @@ STORED AS INPUTFORMAT
 OUTPUTFORMAT 
   'org.apache.hadoop.hive.ql.io.IgnoreKeyTextOutputFormat'
 LOCATION
-  's3://cloud-platform-90369d2cf10c9e5bc408712362ec67a0/serco';
+  's3://cloud-platform-befbfb3ace88e38751c283d612b3d520/serco';
