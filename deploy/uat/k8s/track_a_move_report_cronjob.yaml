@@ -1,0 +1,154 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: track-a-move-uat-report
+  namespace: track-a-move-uat
+  labels:
+    app: track-a-move-uat-report
+spec:
+  schedule: "05 02 */1 * *" # every day at 2:05AM
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 5
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          securityContext:
+            runAsUser: 1000
+          containers:
+            - name: track-a-move-report
+              image: ministryofjustice/cloud-platform-tools
+              command: [ "/bin/bash" ]
+              args: [ "/scripts/track-a-move-report.sh" ]
+              imagePullPolicy: Always
+              volumeMounts:
+                - name: script
+                  mountPath: "/scripts"
+              env:
+              - name: AWS_ACCESS_KEY_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: track-a-move-s3-bucket
+                    key: access_key_id
+              - name: AWS_SECRET_ACCESS_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: track-a-move-s3-bucket
+                    key: secret_access_key
+              - name: AWS_BUCKET_NAME
+                valueFrom:
+                  secretKeyRef:
+                    name: track-a-move-s3-bucket
+                    key: bucket_name
+              - name: AWS_BUCKET_ARN
+                valueFrom:
+                  secretKeyRef:
+                    name: track-a-move-s3-bucket
+                    key: bucket_arn
+              - name: AWS_DEFAULT_REGION
+                value: "eu-west-2"
+              - name: INFO_SLACKWEBHOOK
+                valueFrom:
+                  secretKeyRef:
+                    name: track-a-move-uat-report-secrets
+                    key: book-secure-move-feeds-webhook
+          volumes:
+            - name: script
+              configMap:
+                name: track-a-move-uat-report-script
+          restartPolicy: OnFailure
+          terminationGracePeriodSeconds: 0
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: track-a-move-uat-report-secrets
+  namespace: track-a-move-uat
+  labels:
+    app: track-a-move-uat-report
+type: Opaque
+data:
+  book-secure-move-feeds-webhook: <REPLACE THIS URL>
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: track-a-move-uat-report-script
+  namespace: track-a-move-uat
+  labels:
+    app: track-a-move-uat-report
+data:
+  track-a-move-report.sh: |
+    #!/bin/bash
+
+    Suppliers=("geoamey" "serco")
+    DatePrefix=$(date -d "yesterday" '+year=%Y/month=%m/day=%d/')
+    DateFriendly=$(date -d "yesterday" '+%d-%m-%Y')
+    Environment="UAT"
+    SlackPayload=$(cat <<-END
+    {
+      "blocks": [
+      {
+        "type": "header",
+        "text": {
+          "type": "plain_text",
+          "text": ":memo: Track a Move data received yesterday ${DateFriendly} on ${Environment}",
+          "emoji": true
+        }
+      },
+      {
+        "type": "divider"
+      }
+      ]
+    }
+    END
+    )
+
+    # Creates a new slack block
+    newBlock ()
+    {
+      case $1 in
+      0)
+        FILES="*no files*"
+        STATUS=:x:
+        ALERT=true
+        ;;
+      1)
+        FILES="*$1 file* (${2})"
+        STATUS=:warning:
+        ;;
+      *)
+        FILES="*$1 files* (${2} - ${3})"
+        STATUS=:white_check_mark:
+        ;;
+      esac
+      BLOCK="[{\"type\": \"section\",\"text\": { \"type\": \"mrkdwn\", \"text\": \"${STATUS} ${Supplier}: ${FILES}\"}} ]"
+    }
+
+    # addToPayload
+    addToPayload () {
+      SlackPayload=$(echo "${SlackPayload}" | jq ".blocks += $1")
+    }
+
+    for Supplier in "${Suppliers[@]}"
+    do
+      Data=$(aws s3api list-objects-v2 --bucket ${AWS_BUCKET_NAME} --prefix "${Supplier}/${DatePrefix}" | jq -s '[ .[].Contents[].LastModified ] | { "length": length, "min": min, "max": max }')
+      Length=$(echo $Data | jq -r '.length')
+      Min=$(echo $Data | jq -r '.min | tostring| split("T")[1] | tostring | split("Z")[0]')
+      Max=$(echo $Data | jq -r '.max | tostring| split("T")[1] | tostring | split("Z")[0]')
+
+      if [ "${Length}" -gt "0" ]
+      then
+        newBlock "${Length}" "$Min" "$Max"
+        addToPayload "${BLOCK}"
+        echo "${Supplier}: ${Length} files (${Min} - ${Max})"
+      else
+        newBlock "${Length}"
+        addToPayload "${BLOCK}"
+        echo "${Supplier}: no files"
+      fi
+    done
+
+    curl --write-out '%{http_code}' --silent --output /dev/null  -X POST -H 'Content-type: application/json' --data "$SlackPayload" $INFO_SLACKWEBHOOK
