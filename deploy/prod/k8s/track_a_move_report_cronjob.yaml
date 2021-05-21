@@ -1,10 +1,10 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: track-a-move-uat-report
-  namespace: track-a-move-uat
+  name: track-a-move-prod-report
+  namespace: track-a-move-prod
   labels:
-    app: track-a-move-uat-report
+    app: track-a-move-prod-report
 spec:
   schedule: "05 02 */1 * *" # every day at 2:05AM
   successfulJobsHistoryLimit: 1
@@ -50,12 +50,12 @@ spec:
               - name: INFO_SLACKWEBHOOK
                 valueFrom:
                   secretKeyRef:
-                    name: track-a-move-uat-report-secrets
+                    name: track-a-move-prod-report-secrets
                     key: book-secure-move-feeds-webhook
           volumes:
             - name: script
               configMap:
-                name: track-a-move-uat-report-script
+                name: track-a-move-prod-report-script
           restartPolicy: OnFailure
           terminationGracePeriodSeconds: 0
 
@@ -63,10 +63,10 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: track-a-move-uat-report-secrets
-  namespace: track-a-move-uat
+  name: track-a-move-prod-report-secrets
+  namespace: track-a-move-prod
   labels:
-    app: track-a-move-uat-report
+    app: track-a-move-prod-report
 type: Opaque
 data:
   book-secure-move-feeds-webhook: "<REPLACE THIS WITH A BASE64 URL>"
@@ -75,10 +75,10 @@ data:
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: track-a-move-uat-report-script
-  namespace: track-a-move-uat
+  name: track-a-move-prod-report-script
+  namespace: track-a-move-prod
   labels:
-    app: track-a-move-uat-report
+    app: track-a-move-prod-report
 data:
   track-a-move-report.sh: |
     #!/bin/bash
@@ -86,7 +86,7 @@ data:
     Suppliers=("geoamey" "serco")
     DatePrefix=$(date -d "yesterday" '+year=%Y/month=%m/day=%d/')
     DateFriendly=$(date -d "yesterday" '+%d-%m-%Y')
-    Environment="UAT"
+    Environment="Production"
     SlackPayload=$(cat <<-END
     {
       "blocks": [
