@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const {expect} = require('chai')
+const { expect } = require('chai')
 const mappingTemplate = require('api-gateway-mapping-template')
 
 const cache = {}
@@ -14,13 +14,13 @@ const getTemplate = (templateName) => {
 const runTemplate = (payloadName, templateName = 'mapping') => {
   const template = getTemplate(templateName)
   const apikey = 'test-a792e045f206a52ac0530ed70a1dfab8'
-  const payload = fs.readFileSync(`${__dirname}/input/${payloadName}.json`, 'utf8');
+  const payload = fs.readFileSync(`${__dirname}/input/${payloadName}.json`, 'utf8')
 
-  const output = mappingTemplate({template, payload, params: {header: {"x-api-key": apikey}}})
+  const output = mappingTemplate({ template, payload, params: { header: { 'x-api-key': apikey } } })
   const result = JSON.parse(output)
-  result.Records = result.Records.map(({Data}) => {
+  result.Records = result.Records.map(({ Data }) => {
     return {
-      Data: JSON.parse(Buffer.from(Data, 'base64').toString())
+      Data: JSON.parse(Buffer.from(Data, 'base64').toString()),
     }
   })
   return result
@@ -33,7 +33,7 @@ const runTemplateAgainstSnapshot = (sample, templateName = 'mapping') => {
   const expected = JSON.parse(fs.readFileSync(`${__dirname}/output/${outputName}.json`, 'utf8'))
   return {
     result,
-    expected
+    expected,
   }
 }
 /*
@@ -106,16 +106,19 @@ describe.skip('When loading input 1', function() {
 })
 */
 
-describe('When payload has only mandatory fields', function() {
-  it('should generate the expected output', function(){
+// eslint-disable-next-line no-undef,func-names
+describe('When payload has only mandatory fields', function () {
+  // eslint-disable-next-line no-undef,func-names
+  it('should generate the expected output', function () {
     const values = runTemplateAgainstSnapshot('1')
     expect(values.result).to.deep.equal(values.expected)
   })
 })
 
-
-describe('When payload has all optional fields', function() {
-  it('should generate the expected output', function(){
+// eslint-disable-next-line no-undef,func-names
+describe('When payload has all optional fields', function () {
+  // eslint-disable-next-line no-undef,func-names
+  it('should generate the expected output', function () {
     const values = runTemplateAgainstSnapshot('2')
     expect(values.result).to.deep.equal(values.expected)
   })

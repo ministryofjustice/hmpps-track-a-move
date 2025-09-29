@@ -5,14 +5,18 @@
   "main": "test.js",
   "dependencies": {
     "api-gateway-mapping-template": "^0.0.8",
-    "chai": "^4.2.0",
-    "is-my-json-valid": "^2.20.5",
-    "json-find": "^2.0.7",
-    "mocha": "^8.2.1"
+    "chai": "^5.3.3",
+    "is-my-json-valid": "^2.20.6",
+    "json-find": "^2.0.8",
+    "mocha": "^11.7.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@ministryofjustice/eslint-config-hmpps": "^0.0.1"
+  },
   "scripts": {
-    "test": "mocha spec"
+    "test": "mocha spec",
+    "build": "npm ci --no-audit",
+    "lint": "eslint . --cache --max-warnings 0"
   },
   "repository": {
     "type": "git",
