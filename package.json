@@ -11,12 +11,14 @@
     "mocha": "^11.7.2"
   },
   "devDependencies": {
-    "@ministryofjustice/eslint-config-hmpps": "^0.0.1"
+    "@ministryofjustice/eslint-config-hmpps": "^0.0.1",
+    "@ministryofjustice/hmpps-npm-script-allowlist": "0.0.3"
   },
   "scripts": {
     "test": "mocha spec",
-    "build": "npm ci --no-audit",
-    "lint": "eslint . --cache --max-warnings 0"
+    "build": "npm run setup",
+    "lint": "eslint . --cache --max-warnings 0",
+    "setup": "npm ci --no-audit && hmpps-npm-script-run-allowlist"
   },
   "repository": {
     "type": "git",
