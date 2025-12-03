@@ -4,6 +4,7 @@
   "description": "track-a-move VTL",
   "main": "test.js",
   "dependencies": {
+    "@ministryofjustice/hmpps-npm-script-allowlist": "0.0.3",
     "api-gateway-mapping-template": "^0.0.8",
     "chai": "^5.3.3",
     "is-my-json-valid": "^2.20.6",
@@ -11,8 +12,7 @@
     "mocha": "^11.7.2"
   },
   "devDependencies": {
-    "@ministryofjustice/eslint-config-hmpps": "^0.0.1",
-    "@ministryofjustice/hmpps-npm-script-allowlist": "0.0.3"
+    "@ministryofjustice/eslint-config-hmpps": "^0.0.1"
   },
   "scripts": {
     "test": "mocha spec",
