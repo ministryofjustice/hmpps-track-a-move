@@ -40,7 +40,7 @@ jobs:
         id: unit-tests
         shell: bash
         run: |
-          sudo npm run test
+          npm run test
         # continue-on-error: true
         # Replacing the above with if: always()
       - name: upload the artifacts
