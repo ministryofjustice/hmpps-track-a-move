@@ -4,7 +4,7 @@ const { expect } = require('chai')
 const mappingTemplate = require('api-gateway-mapping-template')
 
 const cache = {}
-const getTemplate = (templateName) => {
+const getTemplate = templateName => {
   if (!cache[templateName]) {
     cache[templateName] = fs.readFileSync(path.resolve(__dirname, '..', `${templateName}.vtl`), 'utf8')
   }
