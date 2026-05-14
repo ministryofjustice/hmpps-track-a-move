@@ -4,15 +4,15 @@
   "description": "track-a-move VTL",
   "main": "test.js",
   "dependencies": {
-    "@ministryofjustice/hmpps-npm-script-allowlist": "0.0.3",
+    "@ministryofjustice/hmpps-npm-script-allowlist": "0.0.4",
     "api-gateway-mapping-template": "^0.0.8",
     "chai": "^5.3.3",
     "is-my-json-valid": "^2.20.6",
     "json-find": "^2.0.8",
-    "mocha": "^11.7.2"
+    "mocha": "^11.7.5"
   },
   "devDependencies": {
-    "@ministryofjustice/eslint-config-hmpps": "^0.0.1"
+    "@ministryofjustice/eslint-config-hmpps": "^1.0.3"
   },
   "scripts": {
     "test": "mocha spec",
@@ -29,5 +29,12 @@
   "bugs": {
     "url": "https://github.com/ministryofjustice/hmpps-track-a-move/issues"
   },
-  "homepage": "https://github.com/ministryofjustice/hmpps-track-a-move#readme"
+  "homepage": "https://github.com/ministryofjustice/hmpps-track-a-move#readme",
+  "overrides": {
+    "velocityjs": "2.1.6",
+    "mocha":{
+      "diff":"9.0.0",
+      "serialize-javascript":"7.0.5"
+    }
+  }
 }
